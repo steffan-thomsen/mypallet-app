@@ -35,9 +35,8 @@ const filteredUnits = ref([]);
 const fetchTransportUnits = async () => {
     try {
         const response = await axios.get("/transport-units");
-        console.log("API Response:", response.data);
         units.value = response.data;
-        filteredUnits.value = units.value;
+        filteredUnits.value = [...units.value];
     } catch (error) {
         console.error("Error fetching transport units:", error);
     }
@@ -52,9 +51,13 @@ const filterType = async (type) => {
     }
 };
 
+const showAll = async () => {
+    filteredUnits.value = [...units.value];
+};
+
 const handleSearch = async (query) => {
     try {
-        const response = await axios.get(`/search-transport-units`, {
+        const response = await axios.get("/search-transport-units", {
             params: { query },
         });
         filteredUnits.value = response.data;
